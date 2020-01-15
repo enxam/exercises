@@ -1,0 +1,164 @@
+Exercise 5: queries on vacation database
+----------------------------------------
+
+- List the names and addresses of all guests in London,
+  alphabetically ordered by  name.
+
+mysql> select guestname, guestaddress from guest where guestaddress like  "%London" order by guestname;
++--------------+--------------------+
+| guestname    | guestaddress       |
++--------------+--------------------+
+| John Kay     | 56 High St, London |
+| Mike Ritchie | 18 Tain St, London |
++--------------+--------------------+
+2 rows in set (0.00 sec)
+
+
+- List all double or family rooms with a price below £40.00 per night,
+  cheapest first.
+
+mysql> select * from room where price < 40 and type = "double" or price < 40 and type = "family" order by price;
++--------+---------+--------+-------+
+| roomno | hotelno | type   | price |
++--------+---------+--------+-------+
+|    801 | ch02    | double | 15.00 |
+|    601 | fb01    | double | 29.00 |
+|   1001 | dc01    | double | 30.00 |
+|   1101 | dc01    | family | 35.00 |
+|    701 | fb01    | family | 39.00 |
++--------+---------+--------+-------+
+5 rows in set (0.00 sec)
+
+
+- List the bookings for which no date_to has been specified.
+
+mysql> select * from booking where dateto is null;
++---------+---------+------------+--------+--------+
+| hotelno | guestno | datefrom   | dateto | roomno |
++---------+---------+------------+--------+--------+
+| ch01    |   10006 | 2020-04-21 | NULL   |   1101 |
+| dc01    |   10003 | 2020-05-20 | NULL   |   1001 |
+| fb01    |   10001 | 2020-05-01 | NULL   |    701 |
++---------+---------+------------+--------+--------+
+3 rows in set (0.00 sec)
+
+
+- What is the average price of a room?
+
+mysql> select avg(price) from room;
++------------+
+| avg(price) |
++------------+
+|  35.748333 |
++------------+
+1 row in set (0.00 sec)
+
+
+- What is the total revenue per night from all double rooms?
+
+mysql> select sum(price) from room where type = "double";
++------------+
+| sum(price) |
++------------+
+|     160.00 |
++------------+
+1 row in set (0.00 sec)
+
+
+- How many different guests have made bookings for August?
+ --> check this again pls, someone made a start and end reservation for one year
+
+mysql> select count(distinct(guestno)) from booking where datefrom like "%08%";
++--------------------------+
+| count(distinct(guestno)) |
++--------------------------+
+|                        0 |
++--------------------------+
+1 row in set (0.00 sec)
+
+
+mysql> select count(distinct(guestno)) from booking where datefrom like "%05%";
++--------------------------+
+| count(distinct(guestno)) |
++--------------------------+
+|                        4 |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select guestno, count(distinct(guestno)) from booking where datefrom like "%05%" group by guestno;
++---------+--------------------------+
+| guestno | count(distinct(guestno)) |
++---------+--------------------------+
+|   10001 |                        1 |
+|   10003 |                        1 |
+|   10005 |                        1 |
+|   10007 |                        1 |
++---------+--------------------------+
+4 rows in set (0.00 sec)
+
+
+- List the price and type of all rooms at the The Tower Hotel.
+
+mysql> select price, type from room r join hotel h on r.hotelno=h.hotelno where hotelname = "The Tower Hotel";
++-------+--------+
+| price | type   |
++-------+--------+
+| 19.00 | single |
+| 29.00 | double |
+| 39.00 | family |
++-------+--------+
+3 rows in set (0.00 sec)
+
+
+- List all guests currently staying at the The Tower Hotel.
+
+mysql> select guestname from guest g join booking b on g.guestno=b.guestno join hotel h on b.hotelno=h.hotelno where hotelname = "The Tower Hotel";
++--------------+
+| guestname    |
++--------------+
+| John Kay     |
+| John Kay     |
+| Mike Ritchie |
+| Joe Keogh    |
+| Carol Farrel |
++--------------+
+5 rows in set (0.00 sec)
+
+
+- List the details of all rooms at the The Tower Hotel,
+  including the name of the guest staying in the room,
+  if the room is occupied.
+
+mysql> select r.roomno, r.hotelno, type, price, guestname from room r join booking b on r.roomno=b.roomno join hotel h on r.hotelno=h.hotelno join guest g on b.guestno=g.guestno where hotelname = "The Tower Hotel";
++--------+---------+--------+-------+--------------+
+| roomno | hotelno | type   | price | guestname    |
++--------+---------+--------+-------+--------------+
+|    501 | fb01    | single | 19.00 | John Kay     |
+|    501 | fb01    | single | 19.00 | Carol Farrel |
+|    601 | fb01    | double | 29.00 | Mike Ritchie |
+|    601 | fb01    | double | 29.00 | Joe Keogh    |
+|    701 | fb01    | family | 39.00 | John Kay     |
++--------+---------+--------+-------+--------------+
+5 rows in set (0.00 sec)
+
+
+- What is the total income from bookings for the The Tower Hotel today?
+
+--> NOT YET FOR TODAY!
+
+mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join hotel h on r.hotelno=h.hotelno where hotelname = "The Tower Hotel";
++------------+
+| sum(price) |
++------------+
+|     135.00 |
++------------+
+1 row in set (0.00 sec)
+
+
+
+List the rooms that are currently unoccupied at the The Tower Hotel.
+What is the lost income from unoccupied rooms at the The Tower Hotel?
+List the number of rooms in each hotel in London.
+What is the most commonly booked room type for each hotel in London?
+Update the price of all rooms by 5%.
+
