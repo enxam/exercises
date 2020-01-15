@@ -1,0 +1,13 @@
+1NF
+  hospital_db(PatientNo, PatientName, BedNo, WardNo, WardName, DrugNo, DrugName, Descrp, Dosage, MethAdmin, Units, StartDate, FinishDate)
+
+2NF
+  hospital_db(WardNo, WardName)
+	  patients(PatientNo, PatientName, BedNo)
+	  drugs(DrugNo, DrugName, Descrp, Dosage, MethAdmin, PatientNo, StartDate, Units, FinishDate)
+
+3NF
+  hospital_db(WardNo, WardName)
+	  patients(PatientNo, PatientName, BedNo)
+	  drugs(DrugNo, DrugName, Descrp, Dosage, MethAdmin)
+	  treatment(treatNo, PatientNo, DrugNo, StartDate, Units, FinishDate)
