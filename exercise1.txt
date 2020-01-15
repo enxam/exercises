@@ -1,2 +1,19 @@
 COMMANDS FOR DATABASE TECHNOLOGY EXERCISES
 ------------------------------------------
+
+Exercise 1
+----------
+$ mkdir exercises
+$ cd exercises
+$ git init
+$ git remote add origin https://github.com/enxam/exercises.git
+$ code readme.txt
+$ git status
+$ git add readme.txt
+$ git commit -m "Adding readme file to github repository"
+$ git status
+$ git push origin master
+$ code exercise1.txt
+$ git add exercise1.txt
+$ git commit -m "File that contains all commands for exercises"
+$ git push origin master
