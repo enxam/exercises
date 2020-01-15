@@ -201,10 +201,143 @@ mysql> select distinct(r.roomno) from room r join booking b on r.roomno=b.roomno
 
 - What is the lost income from unoccupied rooms at the The Tower Hotel?
 
+mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join hotel h on b.hotelno=h.hotelno where hotelname = "The Tower Hotel";
++------------+
+| sum(price) |
++------------+
+|     145.00 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join hotel h on b.hotelno=h.hotelno where hotelname = "The Tower Hotel" and r.roomno!=b.roomno;
++------------+
+| sum(price) |
++------------+
+|       NULL |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join hotel h on b.hotelno=h.hotelno where hotelname = "The Tower Hotel" and r.roomno!=b.roomno and curdate() between b.datefrom and b.dateto;
++------------+
+| sum(price) |
++------------+
+|       NULL |
++------------+
+1 row in set (0.00 sec)
+
+NOW FIND THE LOST INCOME FOR UNOCCUPIED ROOMS FOR TODAY!
+
+mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join hotel h on b.hotelno=h.hotelno where hotelname = "The Tower Hotel" and curdate() not between b.datefrom and b.dateto;
++------------+
+| sum(price) |
++------------+
+|     116.00 |
++------------+
+1 row in set (0.00 sec)
 
 
+- List the number of rooms in each hotel in London.
 
-List the number of rooms in each hotel in London.
-What is the most commonly booked room type for each hotel in London?
-Update the price of all rooms by 5%.
+mysql> select count(r.roomno) amount_rooms, r.hotelno from room r join hotel h on r.hotelno=h.hotelno where city = "London" group by r.hotelno;
++--------------+---------+
+| amount_rooms | hotelno |
++--------------+---------+
+|            2 | ch01    |
+|            2 | ch02    |
+|            3 | fb01    |
++--------------+---------+
+3 rows in set (0.00 sec)
 
+mysql> select count(r.roomno) amount_rooms, h.hotelname, r.hotelno from room r join hotel h on r.hotelno=h.hotelno where city = "London" group by r.hotelno;
++--------------+-----------------+---------+
+| amount_rooms | hotelname       | hotelno |
++--------------+-----------------+---------+
+|            2 | Omni Shoreham   | ch01    |
+|            2 | Phoenix Park    | ch02    |
+|            3 | The Tower Hotel | fb01    |
++--------------+-----------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select count(r.roomno) amount_rooms, h.hotelname, h.city from room r join hotel h on r.hotelno=h.hotelno where city = "London" group by r.hotelno;
++--------------+-----------------+--------+
+| amount_rooms | hotelname       | city   |
++--------------+-----------------+--------+
+|            2 | Omni Shoreham   | London |
+|            2 | Phoenix Park    | London |
+|            3 | The Tower Hotel | London |
++--------------+-----------------+--------+
+3 rows in set (0.00 sec)
+
+
+- What is the most commonly booked room type for each hotel in London?
+
+--- NOT VERY SURE ABOUT THIS ONE ---
+
+mysql> select type, count(*) from booking b join room r on b.roomno=r.roomno join hotel h on b.hotelno=h.hotelno where city = "London" group by type;
++--------+----------+
+| type   | count(*) |
++--------+----------+
+| family |        3 |
+| double |        4 |
+| single |        3 |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select count(r.hotelno), type, hotelname from room r join hotel h on r.hotelno=h.hotelno where city = "London" group by r.type, h.hotelname;
++------------------+--------+-----------------+
+| count(r.hotelno) | type   | hotelname       |
++------------------+--------+-----------------+
+|                1 | single | Omni Shoreham   |
+|                1 | family | Omni Shoreham   |
+|                1 | single | Phoenix Park    |
+|                1 | double | Phoenix Park    |
+|                1 | single | The Tower Hotel |
+|                1 | double | The Tower Hotel |
+|                1 | family | The Tower Hotel |
++------------------+--------+-----------------+
+7 rows in set (0.00 sec)
+
+
+- Update the price of all rooms by 5%.
+
+mysql> select price from room;
++-------+
+| price |
++-------+
+| 19.00 |
+| 29.00 |
+| 10.00 |
+| 39.00 |
+| 15.00 |
+| 18.00 |
+| 29.99 |
+| 30.00 |
+| 58.00 |
+| 59.99 |
+| 35.00 |
+| 86.00 |
++-------+
+12 rows in set (0.00 sec)
+
+mysql> update room set price = price + (price*0.05);
+Query OK, 12 rows affected, 2 warnings (0.01 sec)
+Rows matched: 12  Changed: 12  Warnings: 2
+
+mysql> select price from room;
++-------+
+| price |
++-------+
+| 19.95 |
+| 30.45 |
+| 10.50 |
+| 40.95 |
+| 15.75 |
+| 18.90 |
+| 31.49 |
+| 31.50 |
+| 60.90 |
+| 62.99 |
+| 36.75 |
+| 90.30 |
++-------+
+12 rows in set (0.00 sec)
