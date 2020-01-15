@@ -1,0 +1,33 @@
+UNF
+  dental_db(staffNo, dentistName, patientNo, patientName, appointDate, time, surgeryNo)
+
+1NF
+  dental_db(staffNo, dentistName, patientNo, patientName, appointDate, time, surgeryNo)
+
+2NF
+  dental_db(staffNo, dentistName)
+	  patients(patientNo, patientName)
+  	appointments(appNo, staffNo, patientNo, appointDate, time, surgeryNo)
+	  surgery(surgeryNo, surgeryName)
+
+Correct solution?
+
+UNF
+  dental_db(staffNo, dentistName, patientNo, patientName, appoint, surgeryNo)
+
+1NF
+  dental_db(staffNo, dentistName, patientNo, patientName, appointDate, time, surgeryNo)
+
+2NF
+  dental_db(staffNo, dentistName)
+	  appointments(appNo, staffNo, patientNo, patientName, appointDate, time, surgeryNo)
+	  surgery(staffNo, appointNo, surgeryNo, surgeryName)
+
+3NF
+  dental_db(staffNo, dentistName)
+	  patients(patientNo, patientName)
+	  appointments(appNo, staffNo, patientNo, surgeryNo)
+	  appointID(appNo, appointDate, appTime)	
+	  surgery(appointDate, surgeryNo, surgeryName, staffNo)
+
+BCNF
