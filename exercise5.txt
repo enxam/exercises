@@ -144,8 +144,6 @@ mysql> select r.roomno, r.hotelno, type, price, guestname from room r join booki
 
 - What is the total income from bookings for the The Tower Hotel today?
 
---> NOT YET FOR TODAY!
-
 mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join hotel h on r.hotelno=h.hotelno where hotelname = "The Tower Hotel";
 +------------+
 | sum(price) |
@@ -154,10 +152,58 @@ mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join ho
 +------------+
 1 row in set (0.00 sec)
 
+--> NOT YET FOR TODAY!
+
+mysql> select sum(price) from room r join booking b on r.roomno=b.roomno join hotel h on r.hotelno=h.hotelno where hotelname = "The Tower Hotel" and '2020-01-15' between b.datefrom and b.dateto;
++------------+
+| sum(price) |
++------------+
+|      29.00 |
++------------+
+1 row in set (0.00 sec)
 
 
-List the rooms that are currently unoccupied at the The Tower Hotel.
-What is the lost income from unoccupied rooms at the The Tower Hotel?
+- List the rooms that are currently unoccupied at the The Tower Hotel.
+
+mysql> select r.roomno from room r join booking b on r.roomno=b.roomno join hotel h on b.hotelno=h.hotelno where hotelname = "The Tower Hotel" and r.roomno!=b.roomno;
+Empty set (0.00 sec)
+
+mysql> select r.roomno from room r join booking b on r.roomno=b.roomno join hotel h on b.hotelno=h.hotelno where r.roomno not in (select r.roomno from room r join booking b on r.roomno=b.roomno where '2020-01-15' between b.datefrom and b.dateto) and hotelname = "The Tower Hotel";
++--------+
+| roomno |
++--------+
+|    501 |
+|    701 |
+|    701 |
+|    501 |
++--------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct(r.roomno) from room r join booking b on r.roomno=b.roomno and r.hotelno=b.hotelno join hotel h on b.hotelno=h.hotelno where r.roomno not in (select r.roomno from room r join booking b on r.roomno=b.roomno where curdate() between b.datefrom and b.dateto) and hotelname = "The Tower Hotel";
++--------+
+| roomno |
++--------+
+|    501 |
+|    701 |
++--------+
+2 rows in set (0.00 sec)
+
+
+mysql> select distinct(r.roomno) from room r join booking b on r.roomno=b.roomno and r.hotelno=b.hotelno join hotel h on b.hotelno=h.hotelno where r.roomno not in (select r.roomno from room r join booking b on r.roomno=b.roomno where '2020-01-15' between b.datefrom and b.dateto) and hotelname = "The Tower Hotel";
++--------+
+| roomno |
++--------+
+|    501 |
+|    701 |
++--------+
+2 rows in set (0.00 sec)
+
+
+- What is the lost income from unoccupied rooms at the The Tower Hotel?
+
+
+
+
 List the number of rooms in each hotel in London.
 What is the most commonly booked room type for each hotel in London?
 Update the price of all rooms by 5%.
