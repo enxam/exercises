@@ -1,3 +1,202 @@
 Exercise 8: Using the Ensembl REST API
 ---------------------------------------
 
+- Get the sequence for the region from basepair 32889000 to 32891000 of human
+  chromosome 13 in FASTA format. Hardmask and softmask the sequence. How  many
+  repeat regions are there in this sequence?
+
+Hardmask:
+
+$ curl 'https://rest.ensembl.org/sequence/region/human/13:32889000..32891000:1?mask=hard' -H 'Content-type:text/x-fasta'
+
+>chromosome:GRCh38:13:32889000:32891000:1
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNGGACAATGTATTCCTCNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNTGGCTGACAAAACATTCTTTACATCTAAGAATAGGTGTCGGTGGAAGTGCTGAGGA
+GGGAGGCAAATTCATATTTTTAATGGATCTCTTCATGTGAAGACAANNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNGCCAGCTACCCCAGTGGAGCTNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNN
+
+Softmask:
+
+$ curl 'https://rest.ensembl.org/sequence/region/human/13:32889000..32891000:1?mask=soft' -H 'Content-type:text/x-fasta'
+
+>chromosome:GRCh38:13:32889000:32891000:1
+ttatgcttctgataaatttgggttatagtttgtttaaaatcagctggaagtttttaatta
+ttgtactcaaaggatgacacaccaaaatcttcagcttttgaagtttttgatgaattgtaa
+ttattgagagaaaagcttgcctgggaaggcattagaattcacctctataaaaggcaagag
+aaaaacacaagaaattaaacaatgagaattcaaactatatttaaaatttgattttgagtt
+actataattgcaccttggaatatatcgaattgcaggaagaactttttgatgaagttttta
+ctttaattgtaagtctatattctgtattgaaagaaggtctttgatttgcagtccctacct
+ttggtgaaaccttaaaataatcatagagacaatgtatttaatgagttttatcttgtagaa
+atagttgttgaaaaatagaggcaaataacaagtctttaaaaaatactagggctgaaatat
+ttacgcatttaaaaatGGACAATGTATTCCTCtttttttttttcttttttgagatggagt
+attgctctgttgcccatgctggagtgcagtggtgccatcttggctcagtgcaaccttcag
+ctccctggttcaagcgattctaatgcctcagcctcccaagtagctgggattaccggcata
+tgccTGGCTGACAAAACATTCTTTACATCTAAGAATAGGTGTCGGTGGAAGTGCTGAGGA
+GGGAGGCAAATTCATATTTTTAATGGATCTCTTCATGTGAAGACAAaatgttatcctttc
+cccaaggcactgactgtttttcccaggggatcgtgccatactggggactcagcgttagcc
+tctgagtttggggcgttgggtaccctggagtcgtggtggccagatcagacgtggtgaagg
+aagatcgtgctgttgagcatgcacagcctccatggagcaggccctggagtggctgactga
+caggctttgaatgggctctcttttccacctggctactaggacactcctctgtcaggagtg
+tctttggccgacatatacatgagccataaacatctttgtgttacacgctcattctaaaag
+agccaactatgtgtctctatcctagacttccttgtcactaatttttcaattctttccaag
+tctgtgagcaagcagccaagccattagctgttgcctatgagtcattacagatttgtatct
+caggccacttctccttccgcatgaagtagaagactagatgtaccacttgaagttctgccc
+accaggataatttgccttcatcactgcctttcagggccatctttaaaagtgtagtgctaa
+aggcatccacatctggctcatgcctgcacaccatgaggattcatttgtagacgaggcctg
+tgctttatcttttcctgctaactggacataggggactcgccctgaggtcacaggtatgga
+taagggtgaggtggtggagcagtggctgctggagtcatggcagtgaggggcagctgttgg
+tgcagttcgtgcatgctttctggacctgcttgggcttggtctcctatataccacttccaa
+tttgtaatggaaagttgctgtacatgtctgacttggtggtttggtgaatttaacttatga
+tggacagttgggttgcacagtcaagttggtataccctggtgaagcataaagcctctacca
+gggcccagcagccagacatcagctgcttttatgatggagaatagttgtcagcagaggaga
+gcatttggggcttGCCAGCTACCCCAGTGGAGCTccacagacactttccattgggtctgt
+tggtaataaggtttaagtggcagggcagcttgcaccagagcatcaacctgctgaagaatc
+cttttttgatttctgctaagctctaaactgtcagccttatggttttcctggcaaatgaac
+tgtaattgcatatactcatacttgccatatattgcctccccaaacaaaagagggccacca
+agcatcatgccttctttgtgg
+
+--> There are four repeat regions
+
+
+- Get the Ensembl Gene ID for the human CCR5 (chemokine (CC motif) receptor 5)  gene.
+
+$ curl 'https://rest.ensembl.org/xrefs/symbol/homo_sapiens/CCR5?' -H 'Content-type:application/json'
+
+[{"type":"gene","id":"ENSG00000160791"}]
+
+OR
+
+$ curl 'https://rest.ensembl.org/xrefs/symbol/homo_sapiens/CCR5?' -H 'Content-type:text/x-fasta'
+
+<html><title>EnsEMBL::REST</title><body><pre>--- 
+- 
+  id: ENSG00000160791
+  type: gene
+</pre></body></html>
+
+
+- Has an orthologue for this gene been identified in chimpanzee?
+
+$ curl 'https://rest.ensembl.org/homology/id/ENSG00000160791?target_species=chimpanzee;type=orthologues' -H 'Content-type:application/text/xml'
+
+<html><title>EnsEMBL::REST</title><body><pre>--- 
+data: 
+  - 
+    homologies: 
+      - 
+        dn_ds: &#39;0.21429&#39;
+        method_link_type: ENSEMBL_ORTHOLOGUES
+        source: 
+          align_seq: MDYQVSSPIYDINYYTSEPCQKINVKQIAARLLPPLYSLVFIFGFVGNMLVILILINCKRLKSMTDIYLLNLAISDLFFLLTVPFWAHYAAAQWDFGNTMCQLLTGLYFIGFFSGIFFIILLTIDRYLAVVHAVFALKARTVTFGVVTSVITWVVAVFASLPGIIFTRSQKEGLHYTCSSHFPYSQYQFWKNFQTLKIVILGLVLPLLVMVICYSGILKTLLRCRNEKKRHRAVRLIFTIMIVYFLFWAPYNIVLLLNTFQEFFGLNNCSSSNRLDQAMQVTETLGMTHCCINPIIYAFVGEKFRNYLLVFFQKHIAKRFCKCCSIFQQEAPERASSVYTRSTGEQEISVGL
+          cigar_line: 352M
+          id: ENSG00000160791
+          perc_id: &#39;99.4318&#39;
+          perc_pos: 100
+          protein_id: ENSP00000292303
+          species: homo_sapiens
+          taxon_id: 9606
+        target: 
+          align_seq: MDYQVSSPIYDIDYYTSEPCQKINVKQIAARLLPPLYSLVFIFGFVGNMLVILILINCKRLKSMTDIYLLNLAISDLFFLLTVPFWAHYAAAQWDFGNTMCQLLTGLYFIGFFSGIFFIILLTIDRYLAIVHAVFALKARTVTFGVVTSVITWVVAVFASLPGIIFTRSQKEGLHYTCSSHFPYSQYQFWKNFQTLKIVILGLVLPLLVMVICYSGILKTLLRCRNEKKRHRAVRLIFTIMIVYFLFWAPYNIVLLLNTFQEFFGLNNCSSSNRLDQAMQVTETLGMTHCCINPIIYAFVGEKFRNYLLVFFQKHIAKRFCKCCSIFQQEAPERASSVYTRSTGEQEISVGL
+          cigar_line: 352M
+          id: ENSPTRG00000014848
+          perc_id: &#39;99.4318&#39;
+          perc_pos: 100
+          protein_id: ENSPTRP00000025599
+          species: pan_troglodytes
+          taxon_id: 9598
+        taxonomy_level: Homininae
+        type: ortholog_one2one
+    id: ENSG00000160791
+</pre></body></html>
+
+// condensed format version:
+$ curl 'https://rest.ensembl.org/homology/id/ENSG00000160791?target_species=chimpanzee;type=orthologues;format=condensed' -H 'Content-type:application/text/xml'
+
+--> Content-type:text/xml is also fine?? you don't need the application?
+
+<html><title>EnsEMBL::REST</title><body><pre>--- 
+data: 
+  - 
+    homologies: 
+      - 
+        id: ENSPTRG00000014848
+        method_link_type: ENSEMBL_ORTHOLOGUES
+        protein_id: ENSPTRP00000025599
+        species: pan_troglodytes
+        taxonomy_level: Homininae
+        type: ortholog_one2one
+    id: ENSG00000160791
+</pre></body></html>
+
+
+- Retrieve the genomic FASTA sequence for ENST00000001146.
+
+$ curl 'https://rest.ensembl.org/sequence/id/ENST00000001146?type=genomic' -H 'Content-type:text/x-fasta'
+
+>ENST00000001146.6 chromosome:GRCh38:2:72129238:72148038:-1
+AGGCAATTTTTTTCCTCCCTCTCTCCGCTCCCCTCGCAGCCTCCACTCCCTTTCCCTTGG
+CCCCTTCCTCCTTCTCTGTTTCGGCTGGAGGTGCCAGGACCCCCGGCCGCAGCCTCCCCT
+CCCCCGCCGCTCCGGTCCCCTCCCGTCGGGCCCTCCCCTCCCCCGCCGCGGCCGGCACAG
+CCAATCCCCCGAGCGGCCGCCAACATGCTCTTTGAGGGCTTGGATCTGGTGTCGGCGCTG
+GCCACCCTCGCCGCGTGCCTGGTGTCCGTGACGCTGCTGCTGGCCGTGTCGCAGCAGCTG
+TGGCAGCTGCGCTGGGCCGCCACTCGCGACAAGAGCTGCAAGCTGCCCATCCCCAAGGGA
+TCCATGGGCTTCCCGCTCATCGGAGAGACCGGCCACTGGCTGCTGCAGGTAAGGGCGCGC
+TCGCTCCGCTGCACTCCGGGGTCCGCTAGCTGCGAGCGCGGGGCAGACGGAGCGGCGGGC
+CGGCCAGGGGGCGCCGGGAGCCTGAAGGCACTGGTCCCCGCCCCGCCCCTTCCCTCCTCT
+CTGCCGCAGCAGCCCGGGCTTCCCCAGCCCGCCGGCAGCGCGGTTCCGGGACCACTGGCG
+.....
+.....
+
+
+- Return the archived sequence for both ENSG00000002587 and ENSG00000003056
+
+$ curl 'https://rest.ensembl.org/archive/id' -H 'Content-type:application/json' -H 'Accept:application/json' -X POST -d '{"id":["ENSG00000002587","ENSG00000003056"]}'
+
+[{"latest":"ENSG00000002587.10","possible_replacement":[],"peptide":null,"type":"Gene","id":"ENSG00000002587","is_current":"1","assembly":"GRCh38","release":"99","version":10},
+{"assembly":"GRCh38","release":"99","version":8,"type":"Gene","possible_replacement":[],"peptide":null,"latest":"ENSG00000003056.8","is_current":"1","id":"ENSG00000003056"}]
+
+
+- Get a sequence from 250 nucleotides located on human
+  chromosome 7 starting  at position 35182.
+
+$ curl 'https://rest.ensembl.org/sequence/region/human/7:35182..35431:1?' -H 'Content-type:text/x-fasta'
+
+
+>chromosome:GRCh38:7:35182:35431:1
+CCCCTGTGGACACTGCCCCTGGGCAGGCCATGAATCTCCTCTGCTCCCACACTCTAGAGT
+TCAACGGGTCTCAGGGGCTCTGCCTGAGGACTGCCCTTCAACCAGGTATTCGTAATTTCC
+CCAAGACCCAGGCTTGCTGAGTCACTCAGTTACCTGAATGCTTTTTTCACAAAGGGATGA
+CTGTGCTGCTCCGTCTTCCTTCTTTTTTGTTTGCAAGGCCACAGGGAAATCTGGATCCTC
+TGGTGAAAAA
+
+-------------------------------------------------------------------------------
